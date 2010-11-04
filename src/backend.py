@@ -23,7 +23,8 @@ error messages of that command.
     """
     pipe = subprocess.Popen(command, stdin=subprocess.PIPE, 
                                      stdout=subprocess.PIPE, 
-                                     stderr=subprocess.PIPE)
+                                     stderr=subprocess.PIPE,
+                                     env=self.environment)
     
     (output,error) = pipe.communicate(inputText)
 
