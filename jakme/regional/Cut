@@ -3,7 +3,6 @@
 case "$OSTYPE" in
 darwin10.0)
   cat - | pbcopy;
-  pbpaste; # So we don't lose what we copied!
 ;;
 
 *)
