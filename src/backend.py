@@ -1,14 +1,18 @@
 #! /usr/bin/env python
 import subprocess
+import unittest
+import os
 
 class Backend:
   """Implements the backend of the JaKme text editor-a system of
 piping text around.
   """
-  environment = {"FILENAME":None}
-
   def __init__(self, env=None):
     """Create a new backend with an optional environment"""
+    self.environment = {'FILENAME':None,
+                        'FILETYPE':None,
+                       }
+
     if env != None:
       for k,v in env.iteritems():
         self.environment[k] = v
@@ -19,20 +23,33 @@ error messages of that command.
     """
     pipe = subprocess.Popen(command, stdin=subprocess.PIPE, 
                                      stdout=subprocess.PIPE, 
-                                     stderr=subprocess.PIPE,
-                                     env=self.environment,
-                                     universal_newlines=True,
-                                     shell=True)
+                                     stderr=subprocess.PIPE)
     
     (output,error) = pipe.communicate(inputText)
 
     return (output,error)
   
+
+class TestBackend(unittest.TestCase):
+  def test_constructor_no_environment(self):
+    "We can make a backend without an environment"
+    backend = Backend()
+    self.assertEqual(backend.environment["FILENAME"], None)
+
+  def test_constructor_environment(self):
+    "Constructor environment is added to backend"
+    backend = Backend({'FILENAME':"test.sh", 'FILETYPE':"bash"})
+    self.assertEqual(backend.environment["FILENAME"], "test.sh")
+    self.assertEqual(backend.environment["FILETYPE"], "bash")
+
+  def test_simple_sendText_usage(self):
+    "System commands output correctly with sendText"
+    backend = Backend()
+    (output,extra) = backend.sendText("/usr/bin/wc", "hello world")
+
+    self.assertEqual(output, "       0       2      11\n")
+    self.assertEqual(extra,  '')
+
 if __name__ == '__main__':
-  backend = Backend({"FILENAME":"test.sh"})
-  if (backend.environment["FILENAME"] != "test.sh"):
-    print("Failed test 1")
-
-  print backend.sendText('/usr/bin/wc', "hello world")
-
+  unittest.main()
 
