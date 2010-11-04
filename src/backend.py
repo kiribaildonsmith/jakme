@@ -58,6 +58,7 @@ class TestBackend(unittest.TestCase):
     backend = Backend({'FILENAME':'test.txt'})
     (output,extra) = backend.sendText("/usr/bin/env")
 
+    # Try and find the variable in the output of the env command
     target = "JAKME_FILENAME=test.txt"
     pattern = re.compile(target)
     output = output.splitlines()
