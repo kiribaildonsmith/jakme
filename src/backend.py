@@ -1,7 +1,8 @@
 #! /usr/bin/env python
+import os
+import re
 import subprocess
 import unittest
-import os
 
 class Backend:
   """Implements the backend of the JaKme text editor-a system of
@@ -17,14 +18,15 @@ piping text around.
       for k,v in env.iteritems():
         self.environment["JAKME_"+k] = v
 
-  def sendText(self, command, inputText):
+  def sendText(self, command, inputText=""):
     """Send a body of text through a command. Return the output and
 error messages of that command.
     """
     pipe = subprocess.Popen(command, stdin=subprocess.PIPE, 
                                      stdout=subprocess.PIPE, 
                                      stderr=subprocess.PIPE,
-                                     env=self.environment)
+                                     env=self.environment,
+                                     shell=True)
     
     (output,error) = pipe.communicate(inputText)
 
@@ -50,6 +52,24 @@ class TestBackend(unittest.TestCase):
 
     self.assertEqual(output, "       0       2      11\n")
     self.assertEqual(extra,  '')
+
+  def test_env_set_up_properly(self):
+    "Check environment is inserted into the sendText command"
+    backend = Backend({'FILENAME':'test.txt'})
+    (output,extra) = backend.sendText("/usr/bin/env")
+
+    target = "JAKME_FILENAME=test.txt"
+    pattern = re.compile(target)
+    output = output.splitlines()
+
+    foundVar = False
+    for var in output:
+      if pattern.search(var):
+        self.assertEqual(target, var)
+        foundVar = True
+
+    self.assertTrue(foundVar)
+
 
 if __name__ == '__main__':
   unittest.main()
