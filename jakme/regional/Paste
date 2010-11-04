@@ -1,0 +1,12 @@
+#! /bin/bash
+
+case "$OSTYPE" in
+darwin10.0)
+  pbpaste
+;;
+
+*)
+  echo "I don't know how to paste on your system." 2> >(echo)
+;;
+esac
+

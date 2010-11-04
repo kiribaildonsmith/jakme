@@ -1,0 +1,12 @@
+#! /bin/bash
+
+case "$OSTYPE" in
+darwin10.0)
+  cat - | pbcopy;
+;;
+
+*)
+  echo "I don't know how to copy on your system" 2> >(echo)
+;;
+esac
+
