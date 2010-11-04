@@ -20,10 +20,19 @@ error messages of that command.
     pipe = subprocess.Popen(command, stdin=subprocess.PIPE, 
                                      stdout=subprocess.PIPE, 
                                      stderr=subprocess.PIPE,
-                                     env=self.environment)
+                                     env=self.environment,
+                                     universal_newlines=True,
+                                     shell=True)
+    
+    (output,error) = pipe.communicate(inputText)
 
-
+    return (output,error)
+  
 if __name__ == '__main__':
   backend = Backend({"FILENAME":"test.sh"})
   if (backend.environment["FILENAME"] != "test.sh"):
     print("Failed test 1")
+
+  print backend.sendText('/usr/bin/wc', "hello world")
+
+
