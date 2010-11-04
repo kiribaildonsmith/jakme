@@ -1,0 +1,9 @@
+#! /bin/bash
+
+if [ -z "$JAKME_FILENAME" ]; then
+  echo "No filename specified" 2> >(echo)
+else
+  cat - >$JAKME_FILENAME
+  cat $JAKME_FILENAME
+fi
+

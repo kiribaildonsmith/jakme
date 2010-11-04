@@ -1,0 +1,12 @@
+#! /bin/bash
+
+if [ -d "$JAKME_FILENAME" ]; then
+  ls -l $JAKME_FILENAME
+elif [ -r "$JAKME_FILENAME" ]; then
+  cat $JAKME_FILENAME
+elif [ -z "$JAKME_FILENAME" ]; then
+  echo "No file specified" 2> >(echo)
+else
+  echo "File is unreadable" 2> >(echo)
+fi
+
