@@ -9,13 +9,13 @@ piping text around.
   """
   def __init__(self, env=None):
     """Create a new backend with an optional environment"""
-    self.environment = {'FILENAME':None,
-                        'FILETYPE':None,
+    self.environment = {'JAKME_FILENAME':'',
+                        'JAKME_FILETYPE':'',
                        }
 
     if env != None:
       for k,v in env.iteritems():
-        self.environment[k] = v
+        self.environment["JAKME_"+k] = v
 
   def sendText(self, command, inputText):
     """Send a body of text through a command. Return the output and
@@ -34,13 +34,13 @@ class TestBackend(unittest.TestCase):
   def test_constructor_no_environment(self):
     "We can make a backend without an environment"
     backend = Backend()
-    self.assertEqual(backend.environment["FILENAME"], None)
+    self.assertEqual(backend.environment["JAKME_FILENAME"], '')
 
   def test_constructor_environment(self):
     "Constructor environment is added to backend"
     backend = Backend({'FILENAME':"test.sh", 'FILETYPE':"bash"})
-    self.assertEqual(backend.environment["FILENAME"], "test.sh")
-    self.assertEqual(backend.environment["FILETYPE"], "bash")
+    self.assertEqual(backend.environment["JAKME_FILENAME"], "test.sh")
+    self.assertEqual(backend.environment["JAKME_FILETYPE"], "bash")
 
   def test_simple_sendText_usage(self):
     "System commands output correctly with sendText"
