@@ -1,0 +1,15 @@
+#! /usr/bin/env perl
+use warnings;
+use strict;
+
+my @input = `cat -`;
+my $command = $input[0];
+shift @input;
+
+#print "The command was: '",$command,"'\n";
+#print "The input was: '",$input,"'\n"
+
+# Run the command on the input
+my @output = `echo "@input" | $command`;
+print @output;
+
