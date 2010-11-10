@@ -3,6 +3,21 @@
 import re
 import subprocess
 import unittest
+import os
+
+def get_commands(root):
+    """Find all the commands under a root"""
+    commands = {}
+    
+    if os.path.exists(root):
+        for root, _, files in os.walk(root):
+            for program in files:
+                fullpath = os.path.join(root, program)
+                if os.access(fullpath, os.X_OK):
+                    commands[program] = fullpath
+
+    return commands
+
 
 class Backend:
     """Implements the backend of the JaKme text editor-a system of
@@ -11,11 +26,13 @@ class Backend:
     def __init__(self, env=None):
         """Create a new backend with an optional environment"""
         self.environment = {'JAKME_FILENAME':'',
-                            'JAKME_FILETYPE':''}
+                            'JAKME_FILETYPE':'',
+                            'JAKME_PREFIX':'JAKME_',
+                            'JAKME_CONFIG_DIR':os.environ['HOME']+'/.jakme/'}
         
         if env != None:
             for key, value in env.iteritems():
-                self.environment["JAKME_"+key] = value
+                self.environment[self.environment['JAKME_PREFIX']+key] = value
             
     def send_text(self, command, input_text=""):
         """Send a body of text through a command. Return the output and
@@ -31,9 +48,49 @@ class Backend:
 
         return (output, error)
   
+    def get_global_commands(self):
+        """Get the paths to commands which should be applied globally to a
+        file
+        """
+        return self.get_jakme_commands('global')
+
+    def get_regional_commands(self):
+        """Gets the paths to commands which should be applied regionally to
+        text
+        """
+        return self.get_jakme_commands('regional')
+
+
+    def get_jakme_commands(self, subdir):
+        """Fetches commands from the usual places"""
+        commands = {}
+
+        dirs = [self.environment['JAKME_CONFIG_DIR']+subdir,
+                self.environment['JAKME_CONFIG_DIR']
+                +self.environment['JAKME_FILETYPE']+subdir]
+
+        for subdir in dirs:        
+            additional_commands = get_commands(subdir)
+            for (command, path) in additional_commands.items():
+                commands[command] = path
+    
+        return commands
+
+
 
 class TestBackend(unittest.TestCase):
     """Unit tests for the backend"""
+
+    def test_get_commands(self):
+        "We can find executable programs"
+        commands = get_commands('/bin')
+        self.assertTrue(len(commands) > 0)
+
+    def test_get_global(self):
+        "We can find global commands"
+        backend = Backend({'FILETYPE':'c'})
+        commands = backend.get_global_commands()
+        print commands
 
     def test_constructor_no_environment(self):
         "We can make a backend without an environment"
@@ -75,5 +132,6 @@ class TestBackend(unittest.TestCase):
 
 
 if __name__ == '__main__':
+    "Unit testing"
     unittest.main()
 
