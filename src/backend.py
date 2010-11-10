@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 """The backend for the jakme editor framework"""
-import re
 import subprocess
 import os
 
