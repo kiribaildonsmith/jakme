@@ -21,7 +21,7 @@ class TestBackend(unittest.TestCase):
             commands['START_SKYNET']
 
         self.assertEquals(commands['Open'], 
-                backend.environment['JAKME_CONFIG_DIR']+'global/Open')
+                backend.get_environment('CONFIG_DIR')+'global/Open')
 
     def test_get_regional(self):
         "We can find regional commands"
@@ -31,18 +31,18 @@ class TestBackend(unittest.TestCase):
             commands['START_SKYNET']
 
         self.assertEquals(commands['Copy'], 
-                backend.environment['JAKME_CONFIG_DIR']+'regional/Copy')
+                backend.get_environment('CONFIG_DIR')+'regional/Copy')
 
     def test_constructor_no_environment(self):
         "We can make a backend without an environment"
         backend = Backend()
-        self.assertEqual(backend.environment["JAKME_FILENAME"], '')
+        self.assertEqual(backend.get_environment("FILENAME"), '')
 
     def test_constructor_environment(self):
         "Constructor environment is added to backend"
         backend = Backend({'FILENAME':"test.sh", 'FILETYPE':"bash"})
-        self.assertEqual(backend.environment["JAKME_FILENAME"], "test.sh")
-        self.assertEqual(backend.environment["JAKME_FILETYPE"], "bash")
+        self.assertEqual(backend.get_environment("FILENAME"), "test.sh")
+        self.assertEqual(backend.get_environment("FILETYPE"), "bash")
 
     def test_simple_send_text_usage(self):
         "System commands output correctly with send_text"
@@ -70,6 +70,16 @@ class TestBackend(unittest.TestCase):
 
         self.assertTrue(found_var)
         self.assertEqual(extra, '')
+
+    def test_alter_environment(self):
+        "Check we can alter variables in the environment"
+        backend = Backend()
+        with self.assertRaises(KeyError):
+            backend.get_environment('Meaning_of_life')
+
+        backend.set_environment({'Meaning_of_life':'42'})
+        self.assertEqual(backend.get_environment('Meaning_of_life'), '42')
+        self.assertEqual(backend.environment['JAKME_Meaning_of_life'], '42')
 
 if __name__ == '__main__':
     unittest.main()
