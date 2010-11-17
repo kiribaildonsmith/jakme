@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 import sys
 import unittest
+import re
 sys.path.append('..')
 from  backend import *
 
