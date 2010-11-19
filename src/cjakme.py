@@ -4,6 +4,9 @@ import curses
 import curses.textpad
 import backend
 
+__author__ = "Joseph Hallett & Kiri Baildon-Smith"
+__version__ = '0.1'
+
 class Gui():
     """Implements a gui using the Jakme backend"""
 
