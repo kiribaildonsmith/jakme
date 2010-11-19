@@ -48,8 +48,11 @@ class TestBackend(unittest.TestCase):
         "System commands output correctly with send_text"
         backend = Backend()
         (output, extra) = backend.send_text("/usr/bin/wc", "hello world")
+	
+	target = "^\s+0\s+2\s+11$"
+	pattern = re.compile(target)
 
-        self.assertEqual(output, "       0       2      11\n")
+        self.assertTrue(re.match(pattern, output))
         self.assertEqual(extra,  '')
 
     def test_env_set_up_properly(self):
