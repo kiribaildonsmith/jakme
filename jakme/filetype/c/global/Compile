@@ -1,0 +1,29 @@
+#! /bin/bash
+# Compile a C program
+
+MAKE="/usr/bin/make"
+
+# Check to see if a make file exists.  If it does then we'll use that
+if test -f Makefile; 
+then
+  BUILD_COMMAND=$MAKE
+else
+  BUILD_COMMAND="$MAKE `basename $JAKME_FILENAME .c`"
+fi  
+
+ERROR_FILE="/tmp/$JAKME_PID-error"
+OUT_FILE="/tmp/$JAKME_PID-outp"
+
+# Build the program, saving the output to a temporary file
+echo `$BUILD_COMMAND` >$OUT_FILE 2>$ERROR_FILE
+
+
+# Print the output at the top of the source
+echo "/*** COMPILER OUTPUT:"
+cat $OUT_FILE
+echo ""
+cat $ERROR_FILE
+echo "***/"
+echo ""
+cat $JAKME_FILENAME
+

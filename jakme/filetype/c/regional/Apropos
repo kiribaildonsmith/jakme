@@ -1,0 +1,9 @@
+#! /bin/bash
+# Have a look in the manual to find what something does
+
+INPUT=`cat -`
+WORD=`echo $INPUT | perl -npe 's/\(.*//'`
+
+apropos $WORD | egrep "^$WORD" 1>&2
+echo $INPUT
+
