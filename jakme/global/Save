@@ -2,6 +2,7 @@
 
 if [ -z "$JAKME_FILENAME" ]; then
   echo "No filename specified" 2> >(echo)
+  cat -
 else
   cat - >$JAKME_FILENAME
   cat $JAKME_FILENAME

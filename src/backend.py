@@ -36,16 +36,22 @@ class Backend:
     piping text around.
     """
 
-    def __init__(self, env=None):
+    def __init__(self, prefix='JAKME_', env=None):
         """Create a new backend object.
 
         Arguments:
+        prefix -- prefix given to environment variables (by default 'JAKME_')
         env -- any environment variables you wish to initially set
         """
-        self.environment = {'JAKME_FILENAME':'',
-                            'JAKME_FILETYPE':'',
-                            'JAKME_PREFIX':'JAKME_',
-                            'JAKME_CONFIG_DIR':os.environ['HOME']+'/.jakme/'}
+        self.environment = {}
+
+        self.set_environment({'PREFIX':prefix}, prefix)
+        self.set_environment({'FILENAME':'',
+                              'FILETYPE':'',
+                              'CONFIG_DIR':os.environ['HOME']+'/.jakme/',
+                              'PID':str(os.getpid())
+                             })
+                               
         
         if env != None:
             self.set_environment(env)
@@ -64,13 +70,16 @@ class Backend:
             prefix = self.environment['JAKME_PREFIX'] 
         return self.environment[prefix+var]
 
-    def set_environment(self, dictionary):
+    def set_environment(self, dictionary, prefix=None):
         """Sets a variable in the environment
 
         Arguments:
         dictionary -- a mapping of variable names to value
+        prefix -- the prefix to append to all variables
         """
-        prefix = self.get_environment('PREFIX')
+
+        if prefix == None:
+            prefix = self.get_environment('PREFIX')
 
         for key, value in dictionary.iteritems():
             self.environment[prefix+key] = value
