@@ -15,7 +15,7 @@ class TestBackend(unittest.TestCase):
 
     def test_get_global(self):
         "We can find global commands"
-        backend = Backend({'FILETYPE':'c'})
+        backend = Backend(env={'FILETYPE':'c'})
         commands = backend.get_global_commands()
         with self.assertRaises(KeyError):
             commands['START_SKYNET']
@@ -25,7 +25,7 @@ class TestBackend(unittest.TestCase):
 
     def test_get_regional(self):
         "We can find regional commands"
-        backend = Backend({'FILETYPE':'c'})
+        backend = Backend(env={'FILETYPE':'c'})
         commands = backend.get_regional_commands()
         with self.assertRaises(KeyError):
             commands['START_SKYNET']
@@ -40,7 +40,7 @@ class TestBackend(unittest.TestCase):
 
     def test_constructor_environment(self):
         "Constructor environment is added to backend"
-        backend = Backend({'FILENAME':"test.sh", 'FILETYPE':"bash"})
+        backend = Backend(env={'FILENAME':"test.sh", 'FILETYPE':"bash"})
         self.assertEqual(backend.get_environment("FILENAME"), "test.sh")
         self.assertEqual(backend.get_environment("FILETYPE"), "bash")
 
@@ -57,7 +57,7 @@ class TestBackend(unittest.TestCase):
 
     def test_env_set_up_properly(self):
         "Check environment is inserted into the send_text command"
-        backend = Backend({'FILENAME':'test.txt'})
+        backend = Backend(env={'FILENAME':'test.txt'})
         (output, extra) = backend.send_text("/usr/bin/env")
 
         # Try and find the variable in the output of the env command
