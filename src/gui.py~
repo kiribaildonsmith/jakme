@@ -20,13 +20,17 @@ def regional(path):
 	"""Deals with button presses relating to regional commands"""
 	start_sel = SEL_FIRST
 	end_sel = SEL_LAST	
-	text_in = editor.get(start_sel, end_sel)
+	text_in = str(editor.get(start_sel, end_sel))
+
 
 	print text_in
 	editor.delete(start_sel, end_sel)
 	#editor.tag_remove(SEL, start_sel, end_sel)
 
+	print "PATH IS "+path
 	text_out, info = backend.send_text(path, text_in)
+
+	print "OUTPUT IS:"
 	print text_out
 	label_text = info
 
@@ -39,7 +43,6 @@ if __name__ == "__main__":
 
 	label_text = StringVar()
 	backend = Backend()
-
 
 
 	# create the buttons
