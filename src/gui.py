@@ -11,10 +11,26 @@ __version__ = '0.1'
 #Functions are marked by indentation!
 
 
-def regional(event):
-	"""Responds to right-click events in the editor widget"""
-	print editor.get(SEL_FIRST, SEL_LAST)
+def globalcommand(path):
+	"""Deals with button presses relating to global commands"""
 
+
+
+def regional(path):
+	"""Deals with button presses relating to regional commands"""
+	start_sel = SEL_FIRST
+	end_sel = SEL_LAST	
+	text_in = editor.get(start_sel, end_sel)
+
+	print text_in
+	editor.delete(start_sel, end_sel)
+	#editor.tag_remove(SEL, start_sel, end_sel)
+
+	text_out, info = backend.send_text(path, text_in)
+	print text_out
+	label_text = info
+
+	editor.insert(INSERT, text_out)
 
 
 if __name__ == "__main__":
@@ -34,12 +50,12 @@ if __name__ == "__main__":
 
 	for text, path in globalcommands.iteritems():
 		print "Creating button: "+text
-		button = Button(root, text=text, command=(lambda: backend.send_text(path, '')))
+		button = Button(root, text=text, command=(lambda: globalcommand(path)))
 		buttons.append(button)
 
 	for text, path in regionalcommands.iteritems():
 		print "Creating button: "+text
-		button = Button(root, text=text, command=(lambda: backend.send_text(path, '')))
+		button = Button(root, text=text, command=(lambda: regional(path)))
 		buttons.append(button)
 
 
