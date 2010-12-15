@@ -69,6 +69,9 @@ def make_regional_command(path):
 if __name__ == "__main__":
     """Will implement a gui using the Jakme backend"""
     root = Tk()
+    frame = Frame(root)
+    frame.pack()
+
 
     label_text = StringVar()
     backend = Backend()
@@ -79,31 +82,37 @@ if __name__ == "__main__":
     regionalcommands = backend.get_regional_commands()
     print str(globalcommands)
 
+    global_frame = Frame(frame)
+    global_frame.pack()
     for text, path in globalcommands.iteritems():
         print "Creating button: "+text+" with path "+path
-        button = Button(root, text=text, command=make_global_command(path))
+        button = Button(global_frame, text=text, command=make_global_command(path))
         buttons.append(button)
+        button.pack(side=LEFT)
 
+    regional_frame = Frame(frame)
+    regional_frame.pack()
     for text, path in regionalcommands.iteritems():
         print "Creating button: "+text+" with path "+path
-        button = Button(root, text=text, command=make_regional_command(path))
+        button = Button(regional_frame, text=text, command=make_regional_command(path))
         buttons.append(button)
+        button.pack(side=LEFT)
 
 
-    filename = Entry(root, width=100)
-    editor = Text(root, height=40, width=150)
-    feedback = Label(root, textvariable = label_text, width=100, fg="red")
+    filename = Entry(frame, width=100)
+    editor = Text(frame, height=40, width=150)
+    feedback = Label(frame, textvariable = label_text, width=100, fg="red")
 
     
     #place the buttons
-    i = 1
-    for button in buttons:
-        button.grid(column=i, row=0)
-        i = i+1
+    #i = 1
+    #for button in buttons:
+    #    button.pack()
+    #    i = i+1
 
-    filename.grid(column=0, row=0)
-    editor.grid(column=0, row=1, columnspan=7)
-    feedback.grid(column=0, row=2)
+    filename.pack()
+    editor.pack()
+    feedback.pack()
 
     filename.insert(0, "No filename selected")
 
