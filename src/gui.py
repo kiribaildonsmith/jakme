@@ -66,6 +66,7 @@ def make_regional_command(path):
     """
     return (lambda: regional(path))
 
+
 if __name__ == "__main__":
     """Will implement a gui using the Jakme backend"""
     root = Tk()
