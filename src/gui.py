@@ -14,25 +14,46 @@ __version__ = '0.2'
 
 def globalcommand(path):
     """Deals with button presses relating to global commands"""
-
+    return run_command(path, "@0,0", END)
 
 
 def regional(path):
     """Deals with button presses relating to regional commands"""
-    print "PATH IS "+str(path)
-    start_sel = SEL_FIRST
-    end_sel = SEL_LAST    
-    text_in = editor.get(start_sel, end_sel)
+    return run_command(path, SEL_FIRST, SEL_LAST)
 
-    print text_in
-    editor.delete(start_sel, end_sel)
-    #editor.tag_remove(SEL, start_sel, end_sel)
+def run_command(path, start_sel, end_sel):
+    """
+    Runs a command on a region of the editor
+
+    Args:
+    path -- what to run
+    start -- where to start
+    end -- where to end
+    """
+    # If we haven't actually got any text selected then, treat the text_in as
+    # being empty.  Delete any text we have selected
+    try:
+        text_in = editor.get(start_sel, end_sel)
+        editor.delete(start_sel, end_sel)
+    except TclError:
+        text_in = ''
 
     text_out, info = backend.send_text(path, text_in)
-    print text_out
     label_text = info
 
     editor.insert(INSERT, text_out)
+
+
+def make_global_command(path):
+    """Makes a global command to be run
+
+    Args:
+    path -- what to run
+
+    Returns:
+    a function to be called
+    """
+    return (lambda: globalcommand(path))
 
 def make_regional_command(path):
     """Makes a regional command to be run
@@ -60,7 +81,7 @@ if __name__ == "__main__":
 
     for text, path in globalcommands.iteritems():
         print "Creating button: "+text+" with path "+path
-        button = Button(root, text=text, command=(lambda: globalcommand(globalcommands[text])))
+        button = Button(root, text=text, command=make_global_command(path))
         buttons.append(button)
 
     for text, path in regionalcommands.iteritems():
