@@ -84,19 +84,31 @@ def get_filetype():
     backend.set_environment({'FILENAME':fn, 'FILETYPE':ext})
     print ("FUNCTION: get_filetype: " + fn + "  " + ext)
 
-    create_buttons(button_frame)   
+    create_buttons()   
 
 
 
-def create_buttons(frame):
+def create_buttons():
 
-    del(frame)
+    button_frame.pack_forget()
+    global_frame.pack_forget()
+    regional_frame.pack_forget()
 
-    frame = Frame(root)
-    frame.pack(side=BOTTOM)
+    global_children = global_frame.pack_slaves()
+    for child in global_children:
+        child.pack_forget()
 
-    global_frame = Frame(frame)
-    regional_frame = Frame(frame)
+    regional_children = regional_frame.pack_slaves()
+    for child in regional_children:
+        child.pack_forget()
+
+    root.update()
+	
+    #global_frame.destroy()
+    #regional_frame.destroy()
+
+    #global_frame = Frame(button_frame)
+    #regional_frame = Frame(button_frame)
     global_frame.pack()
     regional_frame.pack() 
 
@@ -106,23 +118,19 @@ def create_buttons(frame):
     regionalcommands = backend.get_regional_commands()
     print str(globalcommands)
 
-    global_frame = Frame(frame)
-    global_frame.pack()
     for text, path in globalcommands.iteritems():
         print "Creating button: "+text+" with path "+path
         button = Button(global_frame, text=text, command=make_global_command(path))
         buttons.append(button)
         button.pack(side=LEFT)
 
-    regional_frame = Frame(frame)
-    regional_frame.pack()
     for text, path in regionalcommands.iteritems():
         print "Creating button: "+text+" with path "+path
         button = Button(regional_frame, text=text, command=make_regional_command(path))
         buttons.append(button)
         button.pack(side=LEFT)
 
-
+    button_frame.pack(side=BOTTOM)
 
 
 if __name__ == "__main__":
@@ -131,14 +139,16 @@ if __name__ == "__main__":
     frame = Frame(root)
     frame.pack()
     button_frame = Frame(frame)
-    button_frame.pack()
+    global_frame = Frame(button_frame)
+    regional_frame = Frame(button_frame)
+    #button_frame.pack()
 
 
     label_text = StringVar()
     backend = Backend()
 
 
-    create_buttons(button_frame)
+    create_buttons()
 
 
     filename = Entry(frame, width=100, validatecommand=lambda: get_filetype  (), validate='focusout')

@@ -13,14 +13,17 @@ __version__ = '0.2'
 #Functions are marked by indentation!
 
 
+
 def globalcommand(path):
     """Deals with button presses relating to global commands"""
     return run_command(path, "@0,0", END)
 
 
+
 def regional(path):
     """Deals with button presses relating to regional commands"""
     return run_command(path, SEL_FIRST, SEL_LAST)
+
 
 
 def run_command(path, start_sel, end_sel):
@@ -46,6 +49,7 @@ def run_command(path, start_sel, end_sel):
     editor.insert(INSERT, text_out)
 
 
+
 def make_global_command(path):
     """Makes a global command to be run
 
@@ -56,6 +60,7 @@ def make_global_command(path):
     a function to be called
     """
     return (lambda: globalcommand(path))
+
 
 
 def make_regional_command(path):
@@ -70,6 +75,7 @@ def make_regional_command(path):
     return (lambda: regional(path))
 
 
+
 def get_filetype():
 
     fn = filename.get()
@@ -78,18 +84,31 @@ def get_filetype():
     backend.set_environment({'FILENAME':fn, 'FILETYPE':ext})
     print ("FUNCTION: get_filetype: " + fn + "  " + ext)
 
-    create_buttons(button_frame)   
+    create_buttons()   
 
 
-def create_buttons(frame):
 
-    del(frame)
+def create_buttons():
 
-    frame = Frame(root)
-    frame.pack(side=BOTTOM)
+    button_frame.pack_forget()
+    global_frame.pack_forget()
+    regional_frame.pack_forget()
 
-    global_frame = Frame(frame)
-    regional_frame = Frame(frame)
+    global_children = global_frame.pack_slaves()
+    for child in global_children:
+        child.pack_forget()
+
+    regional_children = regional_frame.pack_slaves()
+    for child in regional_children:
+        child.pack_forget()
+
+    root.update()
+	
+    #global_frame.destroy()
+    #regional_frame.destroy()
+
+    #global_frame = Frame(button_frame)
+    #regional_frame = Frame(button_frame)
     global_frame.pack()
     regional_frame.pack() 
 
@@ -99,21 +118,19 @@ def create_buttons(frame):
     regionalcommands = backend.get_regional_commands()
     print str(globalcommands)
 
-    global_frame = Frame(frame)
-    global_frame.pack()
     for text, path in globalcommands.iteritems():
         print "Creating button: "+text+" with path "+path
         button = Button(global_frame, text=text, command=make_global_command(path))
         buttons.append(button)
         button.pack(side=LEFT)
 
-    regional_frame = Frame(frame)
-    regional_frame.pack()
     for text, path in regionalcommands.iteritems():
         print "Creating button: "+text+" with path "+path
         button = Button(regional_frame, text=text, command=make_regional_command(path))
         buttons.append(button)
         button.pack(side=LEFT)
+
+    button_frame.pack(side=BOTTOM)
 
 
 if __name__ == "__main__":
@@ -122,14 +139,16 @@ if __name__ == "__main__":
     frame = Frame(root)
     frame.pack()
     button_frame = Frame(frame)
-    button_frame.pack()
+    global_frame = Frame(button_frame)
+    regional_frame = Frame(button_frame)
+    #button_frame.pack()
 
 
     label_text = StringVar()
     backend = Backend()
 
 
-    create_buttons(button_frame)
+    create_buttons()
 
 
     filename = Entry(frame, width=100, validatecommand=lambda: get_filetype  (), validate='focusout')
