@@ -1,13 +1,5 @@
 #! /bin/bash
 
-case "$OSTYPE" in
-darwin10.0)
-  cat - | pbcopy;
-  pbpaste; # So we don't lose what we copied!
-;;
-
-*)
-  echo "I don't know how to copy on your system" >/dev/stderr
-;;
-esac
+cat - > /tmp/jakme-clipboard.$JAKME_PID
+cat /tmp/jakme-clipboard.$JAKME_PID
 

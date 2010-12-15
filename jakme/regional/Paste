@@ -1,12 +1,6 @@
 #! /bin/bash
 
-case "$OSTYPE" in
-darwin10.0)
-  echo `pbpaste`
-;;
-
-*)
-  echo "I don't know how to paste on your system." 2> >(echo)
-;;
-esac
+if [ -r /tmp/jakme-clipboard.$JAKME_PID ]; then
+  cat /tmp/jakme-clipboard.$JAKME_PID
+fi
 
