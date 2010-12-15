@@ -104,11 +104,6 @@ def create_buttons():
 
     root.update()
 	
-    #global_frame.destroy()
-    #regional_frame.destroy()
-
-    #global_frame = Frame(button_frame)
-    #regional_frame = Frame(button_frame)
     global_frame.pack()
     regional_frame.pack() 
 
@@ -141,7 +136,6 @@ if __name__ == "__main__":
     button_frame = Frame(frame)
     global_frame = Frame(button_frame)
     regional_frame = Frame(button_frame)
-    #button_frame.pack()
 
 
     label_text = StringVar()
@@ -155,12 +149,6 @@ if __name__ == "__main__":
     editor = Text(frame, height=40, width=150)
     feedback = Label(frame, textvariable = label_text, width=100, fg="red")
 
-    
-    #place the buttons
-    #i = 1
-    #for button in buttons:
-    #    button.pack()
-    #    i = i+1
 
     filename.pack()
     editor.pack()
