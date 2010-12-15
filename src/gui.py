@@ -13,14 +13,17 @@ __version__ = '0.2'
 #Functions are marked by indentation!
 
 
+
 def globalcommand(path):
     """Deals with button presses relating to global commands"""
     return run_command(path, "@0,0", END)
 
 
+
 def regional(path):
     """Deals with button presses relating to regional commands"""
     return run_command(path, SEL_FIRST, SEL_LAST)
+
 
 
 def run_command(path, start_sel, end_sel):
@@ -46,6 +49,7 @@ def run_command(path, start_sel, end_sel):
     editor.insert(INSERT, text_out)
 
 
+
 def make_global_command(path):
     """Makes a global command to be run
 
@@ -56,6 +60,7 @@ def make_global_command(path):
     a function to be called
     """
     return (lambda: globalcommand(path))
+
 
 
 def make_regional_command(path):
@@ -70,14 +75,17 @@ def make_regional_command(path):
     return (lambda: regional(path))
 
 
+
 def get_filetype():
 
     fn = filename.get()
     _, ext = splitext(fn)
+    ext = ext.strip('.')
     backend.set_environment({'FILENAME':fn, 'FILETYPE':ext})
     print ("FUNCTION: get_filetype: " + fn + "  " + ext)
 
     create_buttons(button_frame)   
+
 
 
 def create_buttons(frame):
@@ -113,6 +121,8 @@ def create_buttons(frame):
         button = Button(regional_frame, text=text, command=make_regional_command(path))
         buttons.append(button)
         button.pack(side=LEFT)
+
+
 
 
 if __name__ == "__main__":

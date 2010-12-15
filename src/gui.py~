@@ -74,6 +74,7 @@ def get_filetype():
 
     fn = filename.get()
     _, ext = splitext(fn)
+    ext = ext.strip('.')
     backend.set_environment({'FILENAME':fn, 'FILETYPE':ext})
     print ("FUNCTION: get_filetype: " + fn + "  " + ext)
 
