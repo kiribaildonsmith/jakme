@@ -4,6 +4,7 @@
 from Tkinter import *
 from backend import *
 from copy import *
+from os.path import splitext
 
 __author__ = "Joseph Hallett & Kiri Baildon-Smith"
 __version__ = '0.2'
@@ -14,25 +15,48 @@ __version__ = '0.2'
 
 def globalcommand(path):
     """Deals with button presses relating to global commands"""
-
+    return run_command(path, "@0,0", END)
 
 
 def regional(path):
     """Deals with button presses relating to regional commands"""
-    print "PATH IS "+str(path)
-    start_sel = SEL_FIRST
-    end_sel = SEL_LAST    
-    text_in = editor.get(start_sel, end_sel)
+    return run_command(path, SEL_FIRST, SEL_LAST)
 
-    print text_in
-    editor.delete(start_sel, end_sel)
-    #editor.tag_remove(SEL, start_sel, end_sel)
+
+def run_command(path, start_sel, end_sel):
+    """
+    Runs a command on a region of the editor
+
+    Args:
+    path -- what to run
+    start -- where to start
+    end -- where to end
+    """
+    # If we haven't actually got any text selected then, treat the text_in as
+    # being empty.  Delete any text we have selected
+    try:
+        text_in = editor.get(start_sel, end_sel)
+        editor.delete(start_sel, end_sel)
+    except TclError:
+        text_in = ''
 
     text_out, info = backend.send_text(path, text_in)
-    print text_out
     label_text = info
 
     editor.insert(INSERT, text_out)
+
+
+def make_global_command(path):
+    """Makes a global command to be run
+
+    Args:
+    path -- what to run
+
+    Returns:
+    a function to be called
+    """
+    return (lambda: globalcommand(path))
+
 
 def make_regional_command(path):
     """Makes a regional command to be run
@@ -45,12 +69,28 @@ def make_regional_command(path):
     """
     return (lambda: regional(path))
 
-if __name__ == "__main__":
-    """Will implement a gui using the Jakme backend"""
-    root = Tk()
 
-    label_text = StringVar()
-    backend = Backend()
+def get_filetype():
+
+    fn = filename.get()
+    _, ext = splitext(fn)
+    backend.set_environment({'FILENAME':fn, 'FILETYPE':ext})
+    print ("FUNCTION: get_filetype: " + fn + "  " + ext)
+
+    create_buttons(button_frame)   
+
+
+def create_buttons(frame):
+
+    del(frame)
+
+    frame = Frame(root)
+    frame.pack(side=BOTTOM)
+
+    global_frame = Frame(frame)
+    regional_frame = Frame(frame)
+    global_frame.pack()
+    regional_frame.pack() 
 
     # create the buttons
     buttons = []
@@ -58,36 +98,58 @@ if __name__ == "__main__":
     regionalcommands = backend.get_regional_commands()
     print str(globalcommands)
 
+    global_frame = Frame(frame)
+    global_frame.pack()
     for text, path in globalcommands.iteritems():
         print "Creating button: "+text+" with path "+path
-        button = Button(root, text=text, command=(lambda: globalcommand(globalcommands[text])))
+        button = Button(global_frame, text=text, command=make_global_command(path))
         buttons.append(button)
+        button.pack(side=LEFT)
 
+    regional_frame = Frame(frame)
+    regional_frame.pack()
     for text, path in regionalcommands.iteritems():
         print "Creating button: "+text+" with path "+path
-        button = Button(root, text=text, command=make_regional_command(path))
+        button = Button(regional_frame, text=text, command=make_regional_command(path))
         buttons.append(button)
+        button.pack(side=LEFT)
 
 
-    filename = Entry(root, width=100)
-    editor = Text(root, height=40, width=150)
-    feedback = Label(root, textvariable = label_text, width=100, fg="red")
+if __name__ == "__main__":
+    """Will implement a gui using the Jakme backend"""
+    root = Tk()
+    frame = Frame(root)
+    frame.pack()
+    button_frame = Frame(frame)
+    button_frame.pack()
+
+
+    label_text = StringVar()
+    backend = Backend()
+
+
+    create_buttons(button_frame)
+
+
+    filename = Entry(frame, width=100, validatecommand=lambda: get_filetype  (), validate='focusout')
+    editor = Text(frame, height=40, width=150)
+    feedback = Label(frame, textvariable = label_text, width=100, fg="red")
 
     
     #place the buttons
-    i = 1
-    for button in buttons:
-        button.grid(column=i, row=0)
-        i = i+1
+    #i = 1
+    #for button in buttons:
+    #    button.pack()
+    #    i = i+1
 
-    filename.grid(column=0, row=0)
-    editor.grid(column=0, row=1, columnspan=7)
-    feedback.grid(column=0, row=2)
+    filename.pack()
+    editor.pack()
+    feedback.pack()
 
     filename.insert(0, "No filename selected")
 
-    fn = filename.get()
-    editor.insert(1.10, fn)
+    #fn = filename.get()
+    #editor.insert(1.10, fn)
 
     editor.bind("<Button-3>", regional)
 

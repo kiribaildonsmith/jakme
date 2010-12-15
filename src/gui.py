@@ -4,6 +4,7 @@
 from Tkinter import *
 from backend import *
 from copy import *
+from os.path import splitext
 
 __author__ = "Joseph Hallett & Kiri Baildon-Smith"
 __version__ = '0.2'
@@ -20,6 +21,7 @@ def globalcommand(path):
 def regional(path):
     """Deals with button presses relating to regional commands"""
     return run_command(path, SEL_FIRST, SEL_LAST)
+
 
 def run_command(path, start_sel, end_sel):
     """
@@ -55,6 +57,7 @@ def make_global_command(path):
     """
     return (lambda: globalcommand(path))
 
+
 def make_regional_command(path):
     """Makes a regional command to be run
     
@@ -67,15 +70,27 @@ def make_regional_command(path):
     return (lambda: regional(path))
 
 
-if __name__ == "__main__":
-    """Will implement a gui using the Jakme backend"""
-    root = Tk()
+def get_filetype():
+
+    fn = filename.get()
+    _, ext = splitext(fn)
+    backend.set_environment({'FILENAME':fn, 'FILETYPE':ext})
+    print ("FUNCTION: get_filetype: " + fn + "  " + ext)
+
+    create_buttons(button_frame)   
+
+
+def create_buttons(frame):
+
+    del(frame)
+
     frame = Frame(root)
-    frame.pack()
+    frame.pack(side=BOTTOM)
 
-
-    label_text = StringVar()
-    backend = Backend()
+    global_frame = Frame(frame)
+    regional_frame = Frame(frame)
+    global_frame.pack()
+    regional_frame.pack() 
 
     # create the buttons
     buttons = []
@@ -100,7 +115,23 @@ if __name__ == "__main__":
         button.pack(side=LEFT)
 
 
-    filename = Entry(frame, width=100)
+if __name__ == "__main__":
+    """Will implement a gui using the Jakme backend"""
+    root = Tk()
+    frame = Frame(root)
+    frame.pack()
+    button_frame = Frame(frame)
+    button_frame.pack()
+
+
+    label_text = StringVar()
+    backend = Backend()
+
+
+    create_buttons(button_frame)
+
+
+    filename = Entry(frame, width=100, validatecommand=lambda: get_filetype  (), validate='focusout')
     editor = Text(frame, height=40, width=150)
     feedback = Label(frame, textvariable = label_text, width=100, fg="red")
 
@@ -117,8 +148,8 @@ if __name__ == "__main__":
 
     filename.insert(0, "No filename selected")
 
-    fn = filename.get()
-    editor.insert(1.10, fn)
+    #fn = filename.get()
+    #editor.insert(1.10, fn)
 
     editor.bind("<Button-3>", regional)
 
