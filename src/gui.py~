@@ -90,9 +90,9 @@ def get_filetype():
 
 def create_buttons():
 
-    button_frame.pack_forget()
-    global_frame.pack_forget()
-    regional_frame.pack_forget()
+    #button_frame.pack_forget()
+    #global_frame.pack_forget()
+    #regional_frame.pack_forget()
 
     global_children = global_frame.pack_slaves()
     for child in global_children:
@@ -114,13 +114,13 @@ def create_buttons():
     print str(globalcommands)
 
     for text, path in globalcommands.iteritems():
-        print "Creating button: "+text+" with path "+path
+        #print "Creating button: "+text+" with path "+path
         button = Button(global_frame, text=text, command=make_global_command(path))
         buttons.append(button)
         button.pack(side=LEFT)
 
     for text, path in regionalcommands.iteritems():
-        print "Creating button: "+text+" with path "+path
+        #print "Creating button: "+text+" with path "+path
         button = Button(regional_frame, text=text, command=make_regional_command(path))
         buttons.append(button)
         button.pack(side=LEFT)
@@ -156,8 +156,6 @@ if __name__ == "__main__":
 
     filename.insert(0, "No filename selected")
 
-    #fn = filename.get()
-    #editor.insert(1.10, fn)
 
     editor.bind("<Button-3>", regional)
 
