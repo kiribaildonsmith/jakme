@@ -82,6 +82,8 @@ class Backend:
             prefix = self.get_environment('PREFIX')
 
         for key, value in dictionary.iteritems():
+            #print "key "+str(key)+" is a "+str(key.__class__)
+            #print "val "+str(value)+" is a "+str(value.__class__)
             self.environment[prefix+key] = value
 
     def send_text(self, command, input_text=""):
@@ -131,7 +133,9 @@ class Backend:
 
 
         dirs = [config_dir+subdir,
-                config_dir+filetype+subdir]
+                config_dir+'filetype/'+filetype+'/'+subdir]
+
+        print dirs
 
         for subdir in dirs:        
             additional_commands = get_commands(subdir)

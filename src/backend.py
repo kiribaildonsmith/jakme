@@ -135,7 +135,7 @@ class Backend:
         dirs = [config_dir+subdir,
                 config_dir+'filetype/'+filetype+'/'+subdir]
 
-        print dirs
+        #print dirs
 
         for subdir in dirs:        
             additional_commands = get_commands(subdir)

@@ -13,7 +13,6 @@ __version__ = '0.2'
 #Functions are marked by indentation!
 
 
-
 def globalcommand(path):
     """Deals with button presses relating to global commands"""
     return run_command(path, "@0,0", END)
@@ -77,18 +76,22 @@ def make_regional_command(path):
 
 
 def get_filetype():
+    """Gets the filetype and sets in the backend any changes relating to this"""
 
     fn = filename.get()
     _, ext = splitext(fn)
     ext = ext.strip('.')
     backend.set_environment({'FILENAME':fn, 'FILETYPE':ext})
-    print ("FUNCTION: get_filetype: " + fn + "  " + ext)
+    #print ("FUNCTION: get_filetype: " + fn + "  " + ext)
 
     create_buttons()   
 
+    return True
 
 
 def create_buttons():
+    """Creates the buttons for the global and regional commands.
+    Global commands are filetype dependent"""
 
     #button_frame.pack_forget()
     #global_frame.pack_forget()
@@ -111,7 +114,7 @@ def create_buttons():
     buttons = []
     globalcommands = backend.get_global_commands()
     regionalcommands = backend.get_regional_commands()
-    print str(globalcommands)
+    #print str(globalcommands)
 
     for text, path in globalcommands.iteritems():
         #print "Creating button: "+text+" with path "+path
@@ -126,6 +129,8 @@ def create_buttons():
         button.pack(side=LEFT)
 
     button_frame.pack(side=BOTTOM)
+
+
 
 
 if __name__ == "__main__":
@@ -145,7 +150,7 @@ if __name__ == "__main__":
     create_buttons()
 
 
-    filename = Entry(frame, width=100, validatecommand=lambda: get_filetype  (), validate='focusout')
+    filename = Entry(frame, width=100, validatecommand=get_filetype, validate=ALL)
     editor = Text(frame, height=40, width=150)
     feedback = Label(frame, textvariable = label_text, width=100, fg="red")
 
