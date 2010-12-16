@@ -4,7 +4,7 @@
 from Tkinter import END, SEL_FIRST, SEL_LAST, TclError, INSERT
 from Tkinter import LEFT, BOTTOM, Tk, Frame, StringVar, ALL
 from Tkinter import Entry, Button, Text, Label
-from backend import *
+from backend import Backend
 from os.path import splitext
 
 __author__ = "Joseph Hallett & Kiri Baildon-Smith"
@@ -15,13 +15,27 @@ __version__ = '1.0'
 
 
 def globalcommand(path):
-    """Deals with button presses relating to global commands"""
+    """Deals with button presses relating to global commands
+
+    Args:
+    path -- path to the command to run
+
+    Returns:
+    Output of the command
+    """
     return run_command(path, "@0,0", END)
 
 
 
 def regional(path):
-    """Deals with button presses relating to regional commands"""
+    """Deals with button presses relating to regional commands
+
+    Args:
+    path -- path to the command to run
+
+    Returns:
+    Output of the command
+    """
     return run_command(path, SEL_FIRST, SEL_LAST)
 
 
@@ -119,13 +133,15 @@ def create_buttons():
 
     for text, path in globalcommands.iteritems():
         #print "Creating button: "+text+" with path "+path
-        button = Button(global_frame, text=text, command=make_global_command(path))
+        button = Button(global_frame, text=text, 
+                        command=make_global_command(path))
         buttons.append(button)
         button.pack(side=LEFT)
 
     for text, path in regionalcommands.iteritems():
         #print "Creating button: "+text+" with path "+path
-        button = Button(regional_frame, text=text, command=make_regional_command(path))
+        button = Button(regional_frame, text=text, 
+                        command=make_regional_command(path))
         buttons.append(button)
         button.pack(side=LEFT)
 
@@ -151,7 +167,8 @@ if __name__ == "__main__":
     create_buttons()
 
 
-    filename = Entry(frame, width=100, validatecommand=get_filetype, validate=ALL)
+    filename = Entry(frame, width=100, validatecommand=get_filetype, 
+                     validate=ALL)
     editor = Text(frame, height=40, width=150)
     feedback = Label(frame, textvariable = label_text, width=100, fg="red")
 
