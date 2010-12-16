@@ -96,7 +96,7 @@ def get_filetype():
     _, ext = splitext(fln)
     ext = ext.strip('.')
     BACKEND.set_environment({'FILENAME':fln, 'FILETYPE':ext})
-    #print ("FUNCTION: get_filetype: " + fln + "  " + ext)
+    print ("FUNCTION: get_filetype: " + fln + "  " + ext)
 
     create_buttons()   
 
@@ -166,7 +166,7 @@ if __name__ == "__main__":
 
 
     FILENAME = Entry(FRAME, width=100, validatecommand=get_filetype, 
-                     validate=ALL)
+                     validate='focusout')
     EDITOR = Text(FRAME, height=40, width=150)
     FEEDBACK = Label(FRAME, textvariable = '', width=100, fg="red")
 
