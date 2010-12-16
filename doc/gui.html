@@ -1,20 +1,20 @@
 
-<!doctype html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html><head><title>Python: module gui</title>
 </head><body bgcolor="#f0f0f8">
 
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
 <tr bgcolor="#7799ee">
 <td valign=bottom>&nbsp;<br>
-<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>gui</strong></big></big> (version 0.1)</font></td
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>gui</strong></big></big> (version 1.0)</font></td
 ><td align=right valign=bottom
-><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/ugrads/coms2005/cb5126/linux/Desktop/JaKmeHG/jakme/src/gui.py">/home/ugrads/coms2005/cb5126/linux/Desktop/JaKmeHG/jakme/src/gui.py</a></font></td></tr></table>
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/jah/Dropbox/Documents/Coursework/Advanced Software Development/jakme/src/gui.py">/Users/jah/Dropbox/Documents/Coursework/Advanced Software Development/jakme/src/gui.py</a></font></td></tr></table>
     <p><tt>A&nbsp;Tkinter&nbsp;implemention&nbsp;of&nbsp;an&nbsp;editor&nbsp;using&nbsp;the&nbsp;Jakme&nbsp;framework</tt></p>
 <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#aa55cc">
 <td colspan=3 valign=bottom>&nbsp;<br>
-<font color="#fffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
     
 <tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
 <td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="os.html">os</a><br>
@@ -28,12 +28,31 @@
 <font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
     
 <tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><dl><dt><a name="-close_editor"><strong>close_editor</strong></a>()</dt><dd><tt>Closes&nbsp;the&nbsp;editor</tt></dd></dl>
- <dl><dt><a name="-copy_selected"><strong>copy_selected</strong></a>()</dt><dd><tt>Copies&nbsp;the&nbsp;selected&nbsp;text</tt></dd></dl>
- <dl><dt><a name="-cut_selected"><strong>cut_selected</strong></a>()</dt><dd><tt>Cuts&nbsp;the&nbsp;selected&nbsp;text,&nbsp;and&nbsp;saves&nbsp;it&nbsp;to&nbsp;the&nbsp;clipboard</tt></dd></dl>
- <dl><dt><a name="-open_file"><strong>open_file</strong></a>()</dt><dd><tt>Opens&nbsp;the&nbsp;file&nbsp;specified&nbsp;in&nbsp;Filename</tt></dd></dl>
- <dl><dt><a name="-refresh_window"><strong>refresh_window</strong></a>()</dt><dd><tt>Refreshes&nbsp;the&nbsp;window</tt></dd></dl>
- <dl><dt><a name="-save_file"><strong>save_file</strong></a>()</dt><dd><tt>Saves&nbsp;the&nbsp;file</tt></dd></dl>
+<td width="100%"><dl><dt><a name="-create_buttons"><strong>create_buttons</strong></a>()</dt><dd><tt>Creates&nbsp;the&nbsp;buttons&nbsp;for&nbsp;the&nbsp;global&nbsp;and&nbsp;regional&nbsp;commands.<br>
+Global&nbsp;commands&nbsp;are&nbsp;filetype&nbsp;dependent</tt></dd></dl>
+ <dl><dt><a name="-get_filetype"><strong>get_filetype</strong></a>()</dt><dd><tt>Gets&nbsp;the&nbsp;filetype&nbsp;and&nbsp;sets&nbsp;in&nbsp;the&nbsp;backend&nbsp;any&nbsp;changes&nbsp;relating&nbsp;to&nbsp;this</tt></dd></dl>
+ <dl><dt><a name="-globalcommand"><strong>globalcommand</strong></a>(path)</dt><dd><tt>Deals&nbsp;with&nbsp;button&nbsp;presses&nbsp;relating&nbsp;to&nbsp;global&nbsp;commands</tt></dd></dl>
+ <dl><dt><a name="-make_global_command"><strong>make_global_command</strong></a>(path)</dt><dd><tt>Makes&nbsp;a&nbsp;global&nbsp;command&nbsp;to&nbsp;be&nbsp;run<br>
+&nbsp;<br>
+Args:<br>
+path&nbsp;--&nbsp;what&nbsp;to&nbsp;run<br>
+&nbsp;<br>
+Returns:<br>
+a&nbsp;function&nbsp;to&nbsp;be&nbsp;called</tt></dd></dl>
+ <dl><dt><a name="-make_regional_command"><strong>make_regional_command</strong></a>(path)</dt><dd><tt>Makes&nbsp;a&nbsp;regional&nbsp;command&nbsp;to&nbsp;be&nbsp;run<br>
+&nbsp;<br>
+Args:<br>
+path&nbsp;--&nbsp;what&nbsp;to&nbsp;run<br>
+&nbsp;<br>
+Returns:<br>
+a&nbsp;function&nbsp;to&nbsp;be&nbsp;called</tt></dd></dl>
+ <dl><dt><a name="-regional"><strong>regional</strong></a>(path)</dt><dd><tt>Deals&nbsp;with&nbsp;button&nbsp;presses&nbsp;relating&nbsp;to&nbsp;regional&nbsp;commands</tt></dd></dl>
+ <dl><dt><a name="-run_command"><strong>run_command</strong></a>(path, start_sel, end_sel)</dt><dd><tt>Runs&nbsp;a&nbsp;command&nbsp;on&nbsp;a&nbsp;region&nbsp;of&nbsp;the&nbsp;editor<br>
+&nbsp;<br>
+Args:<br>
+path&nbsp;--&nbsp;what&nbsp;to&nbsp;run<br>
+start&nbsp;--&nbsp;where&nbsp;to&nbsp;start<br>
+end&nbsp;--&nbsp;where&nbsp;to&nbsp;end</tt></dd></dl>
 </td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#55aa55">
@@ -113,8 +132,8 @@
 <strong>StringTypes</strong> = (&lt;type 'str'&gt;, &lt;type 'unicode'&gt;)<br>
 <strong>TOP</strong> = 'top'<br>
 <strong>TRUE</strong> = 1<br>
-<strong>TclVersion</strong> = 8.4000000000000004<br>
-<strong>TkVersion</strong> = 8.4000000000000004<br>
+<strong>TclVersion</strong> = 8.5<br>
+<strong>TkVersion</strong> = 8.5<br>
 <strong>UNDERLINE</strong> = 'underline'<br>
 <strong>UNITS</strong> = 'units'<br>
 <strong>VERTICAL</strong> = 'vertical'<br>
@@ -125,7 +144,7 @@
 <strong>Y</strong> = 'y'<br>
 <strong>YES</strong> = 1<br>
 <strong>__author__</strong> = 'Joseph Hallett &amp; Kiri Baildon-Smith'<br>
-<strong>__version__</strong> = '0.1'<br>
+<strong>__version__</strong> = '1.0'<br>
 <strong>wantobjects</strong> = 1</td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#7799ee">
