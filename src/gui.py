@@ -7,7 +7,7 @@ from copy import *
 from os.path import splitext
 
 __author__ = "Joseph Hallett & Kiri Baildon-Smith"
-__version__ = '0.2'
+__version__ = '1.0'
 
 #Put all your function definitions up here!
 #Functions are marked by indentation!

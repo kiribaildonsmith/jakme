@@ -82,7 +82,7 @@ def get_filetype():
     _, ext = splitext(fn)
     ext = ext.strip('.')
     backend.set_environment({'FILENAME':fn, 'FILETYPE':ext})
-    print ("FUNCTION: get_filetype: " + fn + "  " + ext)
+    #print ("FUNCTION: get_filetype: " + fn + "  " + ext)
 
     create_buttons()   
 
