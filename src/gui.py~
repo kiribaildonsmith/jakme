@@ -2,7 +2,7 @@
 # File: gui.py
 """A Tkinter implemention of an editor using the Jakme framework"""
 from Tkinter import END, SEL_FIRST, SEL_LAST, TclError, INSERT
-from Tkinter import LEFT, BOTTOM, Tk, Frame, StringVar, ALL
+from Tkinter import LEFT, BOTTOM, Tk, Frame, ALL
 from Tkinter import Entry, Button, Text, Label
 from backend import Backend
 from os.path import splitext
@@ -58,7 +58,6 @@ def run_command(path, start_sel, end_sel):
         text_in = ''
 
     text_out, info = backend.send_text(path, text_in)
-    label_text = info
 
     editor.insert(INSERT, text_out)
 
@@ -160,7 +159,6 @@ if __name__ == "__main__":
     regional_frame = Frame(button_frame)
 
 
-    label_text = StringVar()
     backend = Backend()
 
 
@@ -170,7 +168,7 @@ if __name__ == "__main__":
     filename = Entry(frame, width=100, validatecommand=get_filetype, 
                      validate=ALL)
     editor = Text(frame, height=40, width=150)
-    feedback = Label(frame, textvariable = label_text, width=100, fg="red")
+    feedback = Label(frame, textvariable = '', width=100, fg="red")
 
 
     filename.pack()
