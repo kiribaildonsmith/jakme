@@ -1,9 +1,10 @@
 #! /usr/bin/env python
 # File: gui.py
 """A Tkinter implemention of an editor using the Jakme framework"""
-from Tkinter import *
+from Tkinter import END, SEL_FIRST, SEL_LAST, TclError, INSERT
+from Tkinter import LEFT, BOTTOM, Tk, Frame, StringVar, ALL
+from Tkinter import Entry, Button, Text, Label
 from backend import *
-from copy import *
 from os.path import splitext
 
 __author__ = "Joseph Hallett & Kiri Baildon-Smith"
