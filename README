@@ -7,6 +7,9 @@ Authors:
 Licence: 
    Artistic License 2.0 © 2000–2006 Perl Foundation
 
+Running:
+   cd to src/ and run gui.py
+
 Notes:
    We are using Python 2.7, using an earlier (or quite frankly a newer)
 version of Python will mean that at the very least the unit tests will
