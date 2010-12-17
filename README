@@ -8,9 +8,16 @@ Licence:
    Artistic License 2.0 © 2000–2006 Perl Foundation
 
 Notes:
-   We are using Python 2.7, using an earlier (or quite frankly a newer) version of Python will mean that at the very least the unit tests will not pass.  Please run all test scripts with python2.7.  They altered the test framework fairly dramatically with 2.7 and added a load of cool new stuff which we use for them.
+   We are using Python 2.7, using an earlier (or quite frankly a newer)
+version of Python will mean that at the very least the unit tests will
+not pass. Please run all test scripts with python2.7. They altered the
+test framework fairly dramatically with 2.7 and added a load of cool new
+stuff which we use for them.
 
-   That said *informal* testing with Python 2.6 seems to hint the code works.  Use at your own peril!  If you are trying to use Python 2.4 because thats what's installed on snowy lose all hope.
+   That said it seems to work well enough with 2.4 upwards so have fun!
 
-   Jakme has a config directory.  To get the unit tests to pass we need this to be in the expected place.  Hopefully this'll be fixed in a later release but for the mean time please symlink the jakme folder to ~/.jakme.
+   Jakme has a config directory. To get the unit tests to pass we need
+this to be in the expected place. Hopefully this'll be fixed in a
+later release but for the mean time please symlink the jakme folder to
+~/.jakme.
 
